@@ -10,7 +10,7 @@ import br.com.aimbra.inspection.connection.JPAUtil;
 public class BaseRepositoryImpl<T> implements BaseRepository<T> {
 	
 	EntityManager em = JPAUtil.getEntityManager();
-
+	
 	@Override
 	public List<T> findAll() {
 		em.getTransaction().begin();

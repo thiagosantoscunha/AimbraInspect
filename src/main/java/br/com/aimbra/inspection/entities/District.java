@@ -21,11 +21,11 @@ public class District implements Serializable {
 	@Column(name = "id")
 	private Long id;
 	
-	@Column(name = "password", nullable = false, length = 100)
-	private String password;
+	@Column(name = "name", nullable = false, length = 100)
+	private String name;
 	
 	@ManyToOne
-	private District district;
+	private City cities;
 
 	public Long getId() {
 		return id;
@@ -34,21 +34,23 @@ public class District implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
 	
-	public District getDistrict() {
-		return district;
+	public String getName() {
+		return name;
 	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public City getCities() {
+		return cities;
+	}
+
+	public void setCities(City cities) {
+		this.cities = cities;
+	}
+
 	
-	public void setDistrict(District district) {
-		this.district = district;
-	}
 	
 }

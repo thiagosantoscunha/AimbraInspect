@@ -2,29 +2,59 @@ package br.com.aimbra.inspection.repositories;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import br.com.aimbra.inspection.connection.JPAUtil;
+
 public class BaseRepositoryImpl<T> implements BaseRepository<T> {
+	
+	EntityManager em = JPAUtil.getEntityManager();
 
 	@Override
 	public List<T> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		em.getTransaction().begin();
+		Query query = em.createQuery("SELECT t FROM T t");
+		em.getTransaction().commit();
+		return (List<T>) query.getResultList();
 	}
 
 	@Override
 	public T findById(Long id) {
-		// TODO Auto-generated method stub
+//		em.getTransaction().begin();
+//		T t = em.find(Class<T>, id);
+//		em.getTransaction().commit();
 		return null;
 	}
 
 	@Override
 	public T create(T t) {
-		// TODO Auto-generated method stub
+		try {	
+			em.getTransaction().begin();
+			em.persist(t);
+			em.getTransaction().commit();
+			return t;
+		} catch(Exception ex) {
+			em.getTransaction().rollback();
+		} finally {
+			em.close();
+		}
 		return null;
 	}
 
 	@Override
 	public T update(T t) {
-		// TODO Auto-generated method stub
+//		try {	
+//			em.getTransaction().begin();
+//			em.persist(t);
+//			em.getTransaction().commit();
+//			return t;
+//		} catch(Exception ex) {
+//			em.getTransaction().rollback();
+//		} finally {
+//			em.close();
+//		}
+		
 		return null;
 	}
 

@@ -1,31 +1,23 @@
 package br.com.aimbra.inspection.main;
 
-import javax.persistence.EntityManager;
-
-import br.com.aimbra.inspection.connection.JPAUtil;
-import br.com.aimbra.inspection.entities.User;
+import br.com.aimbra.inspection.arguments.UserRequest;
+import br.com.aimbra.inspection.arguments.UserResponse;
+import br.com.aimbra.inspection.controllers.UserController;
 
 public class Main {
 	
 	public static void main(String[] args) {
-		System.out.println("Hello World, Java!");
 		
-		User u = new User();
-		u.setUsername("codenome");
+		UserController userController = new UserController();
 		
+		UserRequest user = new UserRequest();
+		user.setUsername("coddy");
+		user.setPassword("123123");
 		
-		EntityManager em = JPAUtil.getEntityManager();
-		try {
-			em.getTransaction().begin();
-			
-			em.persist(u);
-			
-			em.getTransaction().commit();
-		} catch(Exception ex) {
-			em.getTransaction().rollback();
-		} finally {
-			em.close();
-		}
+		UserResponse userResponse = userController.Create(user);
+		
+		System.out.println(userResponse);
+		
 		System.exit(0);
 	}
 

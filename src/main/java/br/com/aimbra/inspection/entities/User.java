@@ -22,6 +22,9 @@ public class User implements Serializable {
 
 	@Column(name = "username", nullable = false, unique = true, length = 50)
 	private String username;
+	
+	@Column(name = "password", nullable = false, length = 32)
+	private String password;
 
 	public Long getId() {
 		return id;
@@ -37,6 +40,10 @@ public class User implements Serializable {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	@Override

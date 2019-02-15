@@ -9,9 +9,9 @@ import br.com.aimbra.inspection.entities.User;
 public interface UserService  {
 	
 	List<UserResponse> findAll();
-	User findById(Long id);
-	User create(UserRequest user);
-	User update(UserRequest user);
-	User delete(UserRequest user);
+	UserResponse findById(Long id);
+	UserResponse create(UserRequest user);
+	UserResponse update(UserRequest user);
+	UserResponse delete(UserRequest user);
 	
 }

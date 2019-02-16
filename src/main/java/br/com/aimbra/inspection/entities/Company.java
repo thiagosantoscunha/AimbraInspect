@@ -29,8 +29,8 @@ public class Company implements Serializable {
 	@Column(name = "name", length = 150, nullable = false, unique = true)
 	private String name;
 
-	@Column(name = "public_place", length = 150, nullable = false)
-	private String publicPlace;
+	@Column(name = "street", length = 150, nullable = false)
+	private String street;
 
 	@Column(name = "public_place", length = 8, nullable = false)
 	private String zipCode;
@@ -92,6 +92,7 @@ public class Company implements Serializable {
 	}
 
 	public void setCnpj(String cnpj) {
+		
 		this.cnpj = cnpj;
 	}
 
@@ -103,12 +104,12 @@ public class Company implements Serializable {
 		this.name = name;
 	}
 
-	public String getPublicPlace() {
-		return publicPlace;
+	public String getStreet() {
+		return street;
 	}
 
-	public void setPublicPlace(String publicPlace) {
-		this.publicPlace = publicPlace;
+	public void setStreet(String street) {
+		this.street = street;
 	}
 
 	public String getZipCode() {
@@ -118,5 +119,40 @@ public class Company implements Serializable {
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
 	}
+
+	@Override
+	public String toString() {
+		return "Company [id=" + id + ", cnpj=" + cnpj + ", name=" + name + ", street=" + street + ", zipCode=" + zipCode
+				+ ", district=" + district + ", city=" + city + ", federateUnit=" + federateUnit + ", inspections="
+				+ inspections + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Company other = (Company) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+	
+	
+	
 
 }

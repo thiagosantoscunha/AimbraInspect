@@ -48,24 +48,19 @@ public class BaseRepositoryImpl<T> implements BaseRepository<T> {
 
 	@Override
 	public T update(T t) {
-//		try {	
-//			em.getTransaction().begin();
-//			em.persist(t);
-//			em.getTransaction().commit();
-//			return t;
-//		} catch(Exception ex) {
-//			em.getTransaction().rollback();
-//		} finally {
-//			em.close();
-//		}
-		
-		return null;
+		return t;
 	}
 
 	@Override
 	public T delete(T t) {
 		// TODO Auto-generated method stub
-		return null;
+		return t;
+	}
+
+	@Override
+	public boolean exist(T t) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

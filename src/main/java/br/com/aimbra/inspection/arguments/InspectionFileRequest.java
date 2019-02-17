@@ -4,28 +4,31 @@ import java.time.LocalDate;
 
 public class InspectionFileRequest {
 
-	private LocalDate endYearInspect;
-	private LocalDate endMouthYearInspect;
+	private String endYearInspect;
+	private String endMouthYearInspect;
 	private String cnpj;
 	private String companyName;
 	private String street;
+	private String district;
+
+
 	private String cep;
 	private String city;
 	private String uf;
 
-	public LocalDate getEndYearInspect() {
+	public String getEndYearInspect() {
 		return endYearInspect;
 	}
 
-	public void setEndYearInspect(LocalDate endYearInspect) {
+	public void setEndYearInspect(String endYearInspect) {
 		this.endYearInspect = endYearInspect;
 	}
 
-	public LocalDate getEndMouthYearInspect() {
+	public String getEndMouthYearInspect() {
 		return endMouthYearInspect;
 	}
 
-	public void setEndMouthYearInspect(LocalDate endMouthYearInspect) {
+	public void setEndMouthYearInspect(String endMouthYearInspect) {
 		this.endMouthYearInspect = endMouthYearInspect;
 	}
 
@@ -76,13 +79,23 @@ public class InspectionFileRequest {
 	public void setUf(String uf) {
 		this.uf = uf;
 	}
+	
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
 
 	@Override
 	public String toString() {
 		return "InspectionFileRequest [endYearInspect=" + endYearInspect + ", endMouthYearInspect="
 				+ endMouthYearInspect + ", cnpj=" + cnpj + ", companyName=" + companyName + ", street=" + street
-				+ ", cep=" + cep + ", city=" + city + ", uf=" + uf + "]";
+				+ ", district=" + district + ", cep=" + cep + ", city=" + city + ", uf=" + uf + "]";
 	}
+	
+	
 	
 
 }

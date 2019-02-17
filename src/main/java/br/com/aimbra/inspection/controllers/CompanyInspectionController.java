@@ -1,57 +1,59 @@
 package br.com.aimbra.inspection.controllers;
 
-import java.io.FileNotFoundException;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
 
 import br.com.aimbra.inspection.arguments.InspectionFileRequest;
 
 public class CompanyInspectionController {
+
+	private List<InspectionFileRequest> inspections;
+	private InspectionFileRequest inspection;
+	List<InspectionFileRequest> requests;
+
+	public CompanyInspectionController() {
+		inspections = new ArrayList<>();
+		requests = new ArrayList<>();
+	}
+
 	
 	public void readFile() {
 		try {
-			
-			Reader reader = Files.newBufferedReader(
-					Paths.get("companies.csv")
-					);
-			
-			CSVReader csvReader = new CSVReaderBuilder(reader)
-                    .withSkipLines(1) //para o caso do CSV ter cabeçalho.
-                    .build();
+			File fileDir = new File("file.csv");
 
-			
-			List<String[]> linhas = csvReader.readAll();
-			
-			InspectionFileRequest inspectionFileRequest = new InspectionFileRequest();
-			for (String[] linha : linhas) {					
-				for (String coluna : linha) {
-					String[] datas = coluna.split(";");
-					inspectionFileRequest.setCnpj(datas[2]);
-					inspectionFileRequest.setCompanyName(datas[3]);
-					inspectionFileRequest.setStreet(datas[4]);
-//					inspectionFileRequest.setCep(datas[5]);
-//					inspectionFileRequest.setCity(datas[6]);
-//					inspectionFileRequest.setUf(datas[7]);
-					
-					
-				}
-				System.out.println(inspectionFileRequest);				
-				System.out.println();
+			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(fileDir), "utf8"));
+
+			String linha = br.readLine();
+
+			while ((linha = br.readLine()) != null) {
+
+				String[] fiscalizacao = linha.split(";");
+				
+				InspectionFileRequest inspection = new InspectionFileRequest();
+				inspection.setEndYearInspect(fiscalizacao[0]);
+				inspection.setEndMouthYearInspect(fiscalizacao[1]);
+				inspection.setCnpj(fiscalizacao[2]);
+				inspection.setCompanyName(fiscalizacao[3]);
+				inspection.setStreet(fiscalizacao[4]);
+				inspection.setCep(fiscalizacao[5]);
+				inspection.setDistrict(fiscalizacao[6]);
+				inspection.setCity(fiscalizacao[7]);
+				inspection.setUf(fiscalizacao[8]);
+				
+				requests.add(inspection);
 				
 			}
 			
-			
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			System.out.println(requests);
+
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.printf("Erro na abertura do arquivo: %s.\n", e.getMessage());
 		}
 	}
 

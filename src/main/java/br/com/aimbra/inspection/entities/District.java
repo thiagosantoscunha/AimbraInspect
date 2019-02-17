@@ -25,7 +25,7 @@ public class District implements Serializable {
 	private String name;
 	
 	@ManyToOne
-	private City cities;
+	private City city;
 
 	public Long getId() {
 		return id;
@@ -43,12 +43,12 @@ public class District implements Serializable {
 		this.name = name;
 	}
 
-	public City getCities() {
-		return cities;
+	public City getCity() {
+		return city;
 	}
 
-	public void setCities(City cities) {
-		this.cities = cities;
+	public void setCity(City city) {
+		this.city = city;
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class District implements Serializable {
 
 	@Override
 	public String toString() {
-		return "District [id=" + id + ", name=" + name + ", cities=" + cities + "]";
+		return "District [id=" + id + ", name=" + name + ", cities=" + city + "]";
 	}
 	
 	

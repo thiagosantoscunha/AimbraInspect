@@ -78,4 +78,14 @@ public class CityServiceImpl implements CityService {
 		}
 	}
 
+	@Override
+	public City findByName(City city) {
+		try {
+			city = this.cityRepository.findByName(city);
+			return city == null ? null : city;
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
 }

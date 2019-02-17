@@ -11,4 +11,5 @@ public interface CityService {
 	City create(City city);
 	City update(City city);
 	City delete(City city);
+	City findByName(City city);
 }

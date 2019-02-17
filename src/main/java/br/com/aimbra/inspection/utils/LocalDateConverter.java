@@ -1,23 +1,23 @@
 package br.com.aimbra.inspection.utils;
 
-import java.time.Instant;
+import java.sql.Date;
 import java.time.LocalDate;
-import java.util.Date;
+
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 @Converter(autoApply = true)
 public class LocalDateConverter implements AttributeConverter<LocalDate, Date> {
+	
 
-    @Override
-    public Date convertToDatabaseColumn(LocalDate date) {
-        Instant instant = Instant.from(date);
-        return Date.from(instant);
-    }
-
-    @Override
-    public LocalDate convertToEntityAttribute(Date value) {
-        Instant instant = value.toInstant();
-        return LocalDate.from(instant);
-    }
+	@Override
+	public Date convertToDatabaseColumn(LocalDate data) {
+		return data != null ? Date.valueOf(data) : null;
+	}
+	
+	@Override
+	public LocalDate convertToEntityAttribute(Date data) {
+		return data != null ? data.toLocalDate() : null;
+		
+	}
 }

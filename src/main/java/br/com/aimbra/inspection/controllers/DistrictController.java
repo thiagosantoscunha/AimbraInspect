@@ -34,4 +34,8 @@ public class DistrictController {
 		return this.districtService.delete(district);
 	}
 	
+	public District findByName(District district) {
+		return this.districtService.findByName(district);
+	}
+	
 }

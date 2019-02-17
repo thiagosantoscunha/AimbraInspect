@@ -3,14 +3,18 @@ package br.com.aimbra.inspection.entities;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "companies")
@@ -23,16 +27,16 @@ public class Company implements Serializable {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "cnpj", length = 14, nullable = false, unique = true)
+	@Column(name = "cnpj", length = 18, nullable = false, unique = true)
 	private String cnpj;
-
+	
 	@Column(name = "name", length = 150, nullable = false, unique = true)
 	private String name;
 
 	@Column(name = "street", length = 150, nullable = false)
 	private String street;
 
-	@Column(name = "public_place", length = 8, nullable = false)
+	@Column(name = "zip_code", length = 9, nullable = false)
 	private String zipCode;
 
 	@ManyToOne
@@ -44,8 +48,6 @@ public class Company implements Serializable {
 	@ManyToOne
 	private FederateUnit federateUnit;
 
-	@OneToMany
-	private List<Inspection> inspections;
 
 	public District getDistrict() {
 		return district;
@@ -69,14 +71,6 @@ public class Company implements Serializable {
 
 	public void setFederateUnit(FederateUnit federateUnit) {
 		this.federateUnit = federateUnit;
-	}
-
-	public List<Inspection> getInspections() {
-		return inspections;
-	}
-
-	public void setInspections(List<Inspection> inspections) {
-		this.inspections = inspections;
 	}
 
 	public Long getId() {
@@ -123,8 +117,7 @@ public class Company implements Serializable {
 	@Override
 	public String toString() {
 		return "Company [id=" + id + ", cnpj=" + cnpj + ", name=" + name + ", street=" + street + ", zipCode=" + zipCode
-				+ ", district=" + district + ", city=" + city + ", federateUnit=" + federateUnit + ", inspections="
-				+ inspections + "]";
+				+ ", district=" + district + ", city=" + city + ", federateUnit=" + federateUnit + "]";
 	}
 
 	@Override

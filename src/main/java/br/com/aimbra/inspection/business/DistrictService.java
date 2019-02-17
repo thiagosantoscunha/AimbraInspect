@@ -11,4 +11,5 @@ public interface DistrictService {
 	District create(District district);
 	District update(District district);
 	District delete(District district);
+	District findByName(District district);
 }

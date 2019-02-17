@@ -2,6 +2,7 @@ package br.com.aimbra.inspection.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Calendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "inspections")
@@ -31,7 +34,7 @@ public class Inspection implements Serializable {
 	@Column(name = "public_place", length = 150, nullable = false)
 	private String publicPlace;
 
-	@Column(name = "zip_code", length = 8, nullable = false)
+	@Column(name = "zip_code", length = 9, nullable = false)
 	private String zipCode;
 	
 	@ManyToOne
@@ -42,6 +45,9 @@ public class Inspection implements Serializable {
 
 	@ManyToOne
 	private FederateUnit federateUnit;
+	
+	@ManyToOne
+	private Company company;
 
 	public District getDistrict() {
 		return district;
@@ -106,6 +112,14 @@ public class Inspection implements Serializable {
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
 	}
+	
+	public Company getCompany() {
+		return company;
+	}
+	
+	public void setCompany(Company company) {
+		this.company = company;
+	}
 
 	@Override
 	public int hashCode() {
@@ -136,8 +150,10 @@ public class Inspection implements Serializable {
 	public String toString() {
 		return "Inspection [id=" + id + ", date=" + date + ", nameCompany=" + nameCompany + ", publicPlace="
 				+ publicPlace + ", zipCode=" + zipCode + ", district=" + district + ", city=" + city + ", federateUnit="
-				+ federateUnit + "]";
+				+ federateUnit + ", company=" + company + "]";
 	}
+
+	
 	
 	
 

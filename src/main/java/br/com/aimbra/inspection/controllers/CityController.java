@@ -2,24 +2,21 @@ package br.com.aimbra.inspection.controllers;
 
 import java.util.List;
 
+import br.com.aimbra.inspection.arguments.CityRequest;
+import br.com.aimbra.inspection.arguments.CityResponse;
 import br.com.aimbra.inspection.business.CityService;
 import br.com.aimbra.inspection.business.CityServiceImpl;
-import br.com.aimbra.inspection.business.FederateUnitService;
-import br.com.aimbra.inspection.business.FederateUnitServiceImpl;
 import br.com.aimbra.inspection.entities.City;
 
 public class CityController {
 	
 	private CityService cityService;
-	private FederateUnitService federateInitService;
 	
 	public CityController() {
 		this.cityService = new CityServiceImpl();
-		this.federateInitService = new FederateUnitServiceImpl();
 	}
 	
 	public City create(City city) {
-		
 		return this.cityService.create(city);
 	}
 	

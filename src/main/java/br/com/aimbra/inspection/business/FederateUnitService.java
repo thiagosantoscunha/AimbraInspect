@@ -10,4 +10,5 @@ public interface FederateUnitService {
 	FederateUnit create(FederateUnit federateUnit);
 	FederateUnit update(FederateUnit federateUnit);
 	FederateUnit delete(FederateUnit federateUnit);
+	FederateUnit findByInitials(FederateUnit uf);
 }

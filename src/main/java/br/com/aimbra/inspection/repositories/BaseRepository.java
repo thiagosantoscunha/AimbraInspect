@@ -8,5 +8,4 @@ public interface BaseRepository<T> {
 	T create(T t);
 	T update(T t);
 	T delete(T t);
-	boolean exist(T t);
 }

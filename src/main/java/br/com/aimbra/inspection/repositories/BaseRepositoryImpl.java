@@ -4,36 +4,37 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
 
 import br.com.aimbra.inspection.connection.JPAUtil;
 
-public class BaseRepositoryImpl<T> implements BaseRepository<T> {
+public abstract class BaseRepositoryImpl<T> implements BaseRepository<T> {
 	
-	EntityManager em;
+	protected EntityManager em;
+	private final Class<T> entity;
 	
-	public BaseRepositoryImpl() {
+	public BaseRepositoryImpl(Class<T> entity) {
 		em = JPAUtil.getEntityManager();
+		this.entity = entity;
 	}
 	
 	@Override
 	public List<T> findAll() {
-		em.getTransaction().begin();
-		Query query = em.createQuery("SELECT t FROM T t");
-		em.getTransaction().commit();
-		return (List<T>) query.getResultList();
+		CriteriaQuery<T> query = em.getCriteriaBuilder().createQuery(entity);
+		query.select(query.from(entity));
+
+		List<T> list = em.createQuery(query).getResultList();
+		return list;
 	}
 
 	@Override
 	public T findById(Long id) {
-//		em.getTransaction().begin();
-//		T t = em.find(Class<T>, id);
-//		em.getTransaction().commit();
-		return null;
+		return em.find(entity, id);
 	}
 
 	@Override
 	public T create(T t) {
-		try {	
+		try {
 			em.getTransaction().begin();
 			em.persist(t);
 			em.getTransaction().commit();
@@ -48,19 +49,14 @@ public class BaseRepositoryImpl<T> implements BaseRepository<T> {
 
 	@Override
 	public T update(T t) {
+		em.merge(t);
 		return t;
 	}
 
 	@Override
 	public T delete(T t) {
-		// TODO Auto-generated method stub
+		em.remove(em.merge(t));
 		return t;
-	}
-
-	@Override
-	public boolean exist(T t) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }

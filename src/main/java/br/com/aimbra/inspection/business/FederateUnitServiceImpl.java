@@ -69,5 +69,16 @@ public class FederateUnitServiceImpl implements FederateUnitService {
 			throw ex;
 		}
 	}
+
+	@Override
+	public FederateUnit findByInitials(FederateUnit uf) {
+		try {
+			uf = this.federateUnitRepository.findByInitials(uf);
+			if (uf == null) return null;
+			return uf;
+		} catch (Exception ex) {
+			throw ex;
+		}
+	}
 	
 }

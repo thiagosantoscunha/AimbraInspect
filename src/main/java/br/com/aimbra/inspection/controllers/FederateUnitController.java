@@ -34,5 +34,8 @@ public class FederateUnitController {
 		return this.federateUnitService.delete(federateUnit);
 	}
 	
+	public FederateUnit findByInitials(FederateUnit federateUnit) {
+		return this.federateUnitService.findByInitials(federateUnit);
+	}
 
 }

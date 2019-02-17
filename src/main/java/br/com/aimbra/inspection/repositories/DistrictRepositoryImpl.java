@@ -4,4 +4,8 @@ import br.com.aimbra.inspection.entities.District;
 
 public class DistrictRepositoryImpl extends BaseRepositoryImpl<District> implements DistrictRepository {
 
+	public DistrictRepositoryImpl() {
+		super(District.class);
+	}
+
 }

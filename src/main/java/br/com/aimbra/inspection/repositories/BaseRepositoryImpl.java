@@ -69,6 +69,7 @@ public abstract class BaseRepositoryImpl<T> implements BaseRepository<T> {
 		try {
 			em.getTransaction().begin();
 			em.merge(t);
+			em.getTransaction().commit();
 			return t;
 		} catch(Exception ex) {
 			em.getTransaction().rollback();
@@ -84,6 +85,7 @@ public abstract class BaseRepositoryImpl<T> implements BaseRepository<T> {
 		try {
 			em.getTransaction().begin();
 			em.remove(em.merge(t));
+			em.getTransaction().commit();
 			return t;
 		} catch(Exception ex) {
 			em.getTransaction().rollback();

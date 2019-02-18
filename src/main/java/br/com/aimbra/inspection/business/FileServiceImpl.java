@@ -1,7 +1,5 @@
 package br.com.aimbra.inspection.business;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;

@@ -15,27 +15,34 @@ public class CompanyRepositoryImpl extends BaseRepositoryImpl<Company> implement
 	@Override
 	public Company findByCnpj(Company company) {
 		try {
+			em.getTransaction().begin();
 			Query query = em.createQuery("SELECT c FROM Company c WHERE c.cnpj=:pCompanyCnpj");
 			query.setParameter("pCompanyCnpj", company.getCnpj());
-			return (Company) query.getSingleResult();				
+			company = (Company) query.getSingleResult();
+			em.getTransaction().commit();
+			return company;
 		} catch (Exception e) {
-			throw e;
+			em.getTransaction().rollback();
+		} finally {
+			em.close();
 		}
+		return null;
 	}
 	
 	@Override
 	public boolean exist(Company company) {
+		em.getTransaction().begin();
 		TypedQuery<Company> query = em.createQuery("select c from Company c where c.name = :pName or c.cnpj = :pCnpj", Company.class);
-		
 		query.setParameter("pName", company.getName());
 		query.setParameter("pCnpj", company.getCnpj());
 		try {
 			@SuppressWarnings("unused")
 			Company c = query.getSingleResult();
+			em.getTransaction().commit();
 			return true;
 		} catch (NoResultException ex) {
 			return false;
 		}
 	}
-
+	
 }

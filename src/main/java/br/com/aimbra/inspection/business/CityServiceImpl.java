@@ -1,12 +1,7 @@
 package br.com.aimbra.inspection.business;
 
-import java.lang.reflect.Type;
 import java.util.List;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 
-import br.com.aimbra.inspection.arguments.CityRequest;
-import br.com.aimbra.inspection.arguments.CityResponse;
 import br.com.aimbra.inspection.entities.City;
 import br.com.aimbra.inspection.entities.FederateUnit;
 import br.com.aimbra.inspection.repositories.CityRepository;
@@ -18,12 +13,10 @@ public class CityServiceImpl implements CityService {
 	
 	private CityRepository cityRepository;
 	private FederateUnitRepository federateUnitRepository;
-	private ModelMapper modelMapper;
 	
 	public CityServiceImpl() {
 		this.cityRepository = new CityRepositoryImpl();
 		this.federateUnitRepository = new FederateUnitRepositoryImpl();
-		this.modelMapper = new ModelMapper();
 	}
 	
 	@Override

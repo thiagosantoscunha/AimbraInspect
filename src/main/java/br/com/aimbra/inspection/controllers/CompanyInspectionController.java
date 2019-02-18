@@ -15,13 +15,11 @@ import br.com.aimbra.inspection.business.FileServiceImpl;
 public class CompanyInspectionController {
 
 	private FileService fileService;
-	private List<InspectionFileRequest> inspections;
-	private InspectionFileRequest inspection;
 	List<InspectionFileRequest> requests;
+	private BufferedReader br;
 	
 
 	public CompanyInspectionController() {
-		inspections = new ArrayList<>();
 		requests = new ArrayList<>();
 		fileService = new FileServiceImpl();
 	}
@@ -30,9 +28,7 @@ public class CompanyInspectionController {
 	public void readFile() {
 		try {
 			File fileDir = new File("file.csv");
-
-			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(fileDir), "utf8"));
-
+			br = new BufferedReader(new InputStreamReader(new FileInputStream(fileDir), "utf8"));
 			String linha = br.readLine();
 
 			while ((linha = br.readLine()) != null) {

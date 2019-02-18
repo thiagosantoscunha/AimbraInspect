@@ -10,22 +10,28 @@ public class FederateUnitRepositoryImpl extends BaseRepositoryImpl<FederateUnit>
 	
 	public FederateUnitRepositoryImpl() {
 		super(FederateUnit.class);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public FederateUnit findByInitials(FederateUnit uf) {
 		try {
+			em.getTransaction().begin();
 			Query query = em.createQuery("SELECT uf FROM FederateUnit uf WHERE uf.initials=:pUf");
 			query.setParameter("pUf", uf.getInitials());
-			return (FederateUnit) query.getSingleResult();				
+			uf = (FederateUnit) query.getSingleResult();				
+			em.getTransaction().commit();
+			return uf;
 		} catch (Exception e) {
-			throw e;
+			em.getTransaction().rollback();
+		} finally {
+			em.close();			
 		}
+		return null;
 	}
 	
 	@Override
 	public boolean exist(FederateUnit uf) {
+		em.getTransaction().begin();
 		TypedQuery<FederateUnit> query = em.createQuery(
 				  " select uf from FederateUnit uf "
 				+ " where uf.name = :pUfName or uf.initials = :pUfInitials", FederateUnit.class);
@@ -35,9 +41,13 @@ public class FederateUnitRepositoryImpl extends BaseRepositoryImpl<FederateUnit>
 		try {
 			@SuppressWarnings("unused")
 			FederateUnit resultado = query.getSingleResult();
+			em.getTransaction().commit();
 			return true;
 		} catch (NoResultException ex) {
+			em.getTransaction().rollback();
 			return false;
+		} finally {
+			em.close();			
 		}
 	}
 	

@@ -6,20 +6,24 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import br.com.aimbra.inspection.arguments.InspectionFileRequest;
+import br.com.aimbra.inspection.business.FileService;
+import br.com.aimbra.inspection.business.FileServiceImpl;
 
 public class CompanyInspectionController {
 
+	private FileService fileService;
 	private List<InspectionFileRequest> inspections;
 	private InspectionFileRequest inspection;
 	List<InspectionFileRequest> requests;
+	
 
 	public CompanyInspectionController() {
 		inspections = new ArrayList<>();
 		requests = new ArrayList<>();
+		fileService = new FileServiceImpl();
 	}
 
 	
@@ -50,7 +54,7 @@ public class CompanyInspectionController {
 				
 			}
 			
-			System.out.println(requests);
+			fileService.create(requests);
 
 		} catch (IOException e) {
 			System.err.printf("Erro na abertura do arquivo: %s.\n", e.getMessage());

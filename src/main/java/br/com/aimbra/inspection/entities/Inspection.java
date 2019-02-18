@@ -1,7 +1,9 @@
 package br.com.aimbra.inspection.entities;
 
 import java.io.Serializable;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Calendar;
 
 import javax.persistence.Column;
@@ -86,7 +88,7 @@ public class Inspection implements Serializable {
 	}
 
 	public void setDate(LocalDate date) {
-		this.date = date;
+		this.date = date.with(TemporalAdjusters.lastInMonth(DayOfWeek.FRIDAY));
 	}
 
 	public String getNameCompany() {

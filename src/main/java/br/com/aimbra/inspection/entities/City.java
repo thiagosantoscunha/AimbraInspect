@@ -21,7 +21,7 @@ public class City implements Serializable {
 	@Column(name = "id")
 	private Long id;
 	
-	@Column(name = "name", nullable = false, length = 100)
+	@Column(name = "name", nullable = false, length = 100, unique = true)
 	private String name;
 	
 	@ManyToOne
@@ -78,7 +78,7 @@ public class City implements Serializable {
 
 	@Override
 	public String toString() {
-		return "City [id=" + id + ", password=" + name + ", federationUnit=" + federationUnit + "]";
+		return "City [id=" + id + ", name=" + name + ", federationUnit=" + federationUnit + "]";
 	}
 	
 	

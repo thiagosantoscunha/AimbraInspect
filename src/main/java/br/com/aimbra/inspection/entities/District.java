@@ -2,8 +2,10 @@ package br.com.aimbra.inspection.entities;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +23,7 @@ public class District implements Serializable {
 	@Column(name = "id")
 	private Long id;
 	
-	@Column(name = "name", nullable = false, length = 100)
+	@Column(name = "name", nullable = false, length = 100, unique = true)
 	private String name;
 	
 	@ManyToOne

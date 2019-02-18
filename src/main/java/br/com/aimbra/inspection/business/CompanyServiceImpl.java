@@ -3,7 +3,6 @@ package br.com.aimbra.inspection.business;
 import java.util.List;
 
 import br.com.aimbra.inspection.entities.Company;
-import br.com.aimbra.inspection.entities.District;
 import br.com.aimbra.inspection.repositories.CityRepository;
 import br.com.aimbra.inspection.repositories.CityRepositoryImpl;
 import br.com.aimbra.inspection.repositories.CompanyRepository;
@@ -78,7 +77,7 @@ public class CompanyServiceImpl implements CompanyService {
 	public Company update(Company company) {
 		try {
 			company = this.companyRepository.update(company);
-			return company;
+			return company == null ? null : company;
 		} catch (Exception e) {
 			throw e;
 		}
@@ -88,7 +87,17 @@ public class CompanyServiceImpl implements CompanyService {
 	public Company delete(Company company) {
 		try {
 			company = this.companyRepository.delete(company);
-			return company;
+			return company == null ? null : company;
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
+	@Override
+	public Company findByCnpj(Company company) {
+		try {
+			company = this.companyRepository.findByCnpj(company);
+			return company == null ? null : company;
 		} catch (Exception e) {
 			throw e;
 		}

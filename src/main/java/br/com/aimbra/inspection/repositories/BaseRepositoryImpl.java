@@ -3,7 +3,6 @@ package br.com.aimbra.inspection.repositories;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 import br.com.aimbra.inspection.connection.JPAUtil;
@@ -20,16 +19,34 @@ public abstract class BaseRepositoryImpl<T> implements BaseRepository<T> {
 	
 	@Override
 	public List<T> findAll() {
-		CriteriaQuery<T> query = em.getCriteriaBuilder().createQuery(entity);
-		query.select(query.from(entity));
-
-		List<T> list = em.createQuery(query).getResultList();
-		return list;
+		try {
+			em.getTransaction().begin();
+			CriteriaQuery<T> query = em.getCriteriaBuilder().createQuery(entity);
+			query.select(query.from(entity));
+			List<T> list = em.createQuery(query).getResultList();
+			em.getTransaction().commit();
+			return list;
+		} catch(Exception ex) {
+			em.getTransaction().rollback();
+		} finally {
+			em.close();
+		}
+		return null;
 	}
 
 	@Override
 	public T findById(Long id) {
-		return em.find(entity, id);
+		try {
+			em.getTransaction().begin();
+			T t = em.find(entity, id);
+			em.getTransaction().commit();
+			return t;
+		} catch(Exception ex) {
+			em.getTransaction().rollback();
+		} finally {
+			em.close();
+		}
+		return null;
 	}
 
 	@Override
@@ -49,14 +66,31 @@ public abstract class BaseRepositoryImpl<T> implements BaseRepository<T> {
 
 	@Override
 	public T update(T t) {
-		em.merge(t);
-		return t;
+		try {
+			em.getTransaction().begin();
+			em.merge(t);
+			return t;
+		} catch(Exception ex) {
+			em.getTransaction().rollback();
+		} finally {
+			em.close();
+		}
+		return null;
 	}
 
 	@Override
 	public T delete(T t) {
-		em.remove(em.merge(t));
-		return t;
+		T tAux = t;
+		try {
+			em.getTransaction().begin();
+			em.remove(em.merge(t));
+			return t;
+		} catch(Exception ex) {
+			em.getTransaction().rollback();
+		} finally {
+			em.close();
+		}
+		return tAux;
 	}
 
 }

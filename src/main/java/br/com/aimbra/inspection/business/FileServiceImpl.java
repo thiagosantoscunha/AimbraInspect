@@ -96,13 +96,13 @@ public class FileServiceImpl implements FileService {
 			company.setDistrict(district);
 			company.setName(req.getCompanyName());
 			company.setStreet(req.getStreet());
-			if (!RegexValidators.ZipCodeValidator(req.getCep(), "pt_br")) {
+			if (!RegexValidators.isZipCode(req.getCep(), "pt_br")) {
 				ilError = inspectionLineErrorRepository.create(ilError);
 				continue;
 			}
 			company.setZipCode(req.getCep());
 			
-			if(!RegexValidators.CnpjValidator(req.getCnpj()) || req.getCnpj() == null) {
+			if(!RegexValidators.isCnpj(req.getCnpj()) || req.getCnpj() == null) {
 				ilError = inspectionLineErrorRepository.create(ilError);
 				continue;
 			}

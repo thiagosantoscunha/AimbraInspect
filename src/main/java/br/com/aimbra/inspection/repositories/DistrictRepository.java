@@ -5,8 +5,8 @@ import br.com.aimbra.inspection.entities.District;
 
 public interface DistrictRepository extends BaseRepository<District> {
 	
-	District findByName(District district);
-	District findByNameAndCity(District district, City city);
-	public boolean exist(District district);
-	boolean existOnCity(District district, City city);
+	District findByName(String name);
+	District findByNameOnCity(String name, City city);
+	boolean exist(String name);
+	boolean existOnCity(String name, City city);
 }

@@ -11,77 +11,54 @@ public class InspectionFileRequest {
 	private String cep;
 	private String city;
 	private String uf;
+	
+	public InspectionFileRequest(String line) {
+		String[] fields = line.split(";");
+		endYearInspect = fields[0];
+		endMouthYearInspect = fields[1];
+		cnpj = fields[2];
+		companyName = fields[3];
+		street = fields[4];
+		cep = fields[5];
+		district = fields[6];
+		city = fields[7];
+		uf = fields[8];
+	}
 
 	public String getEndYearInspect() {
 		return endYearInspect;
-	}
-
-	public void setEndYearInspect(String endYearInspect) {
-		this.endYearInspect = endYearInspect;
 	}
 
 	public String getEndMouthYearInspect() {
 		return endMouthYearInspect;
 	}
 
-	public void setEndMouthYearInspect(String endMouthYearInspect) {
-		this.endMouthYearInspect = endMouthYearInspect;
-	}
-
 	public String getCnpj() {
 		return cnpj;
-	}
-
-	public void setCnpj(String cnpj) {
-		this.cnpj = cnpj;
 	}
 
 	public String getCompanyName() {
 		return companyName;
 	}
 
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
-	}
-
 	public String getStreet() {
 		return street;
-	}
-
-	public void setStreet(String street) {
-		this.street = street;
 	}
 
 	public String getCep() {
 		return cep;
 	}
 
-	public void setCep(String cep) {
-		this.cep = cep;
-	}
-
 	public String getCity() {
 		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
 	}
 
 	public String getUf() {
 		return uf;
 	}
-
-	public void setUf(String uf) {
-		this.uf = uf;
-	}
 	
 	public String getDistrict() {
 		return district;
-	}
-
-	public void setDistrict(String district) {
-		this.district = district;
 	}
 
 	@Override

@@ -4,7 +4,7 @@ import br.com.aimbra.inspection.entities.Company;
 
 public interface CompanyRepository extends BaseRepository<Company> {
 	
-	Company findByCnpj(Company company);
+	Company findByCnpj(String cnpj);
 	public boolean exist(Company company);
 
 }

@@ -2,6 +2,8 @@ package br.com.aimbra.inspection.business;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import br.com.aimbra.inspection.entities.Inspection;
 import br.com.aimbra.inspection.repositories.CityRepository;
 import br.com.aimbra.inspection.repositories.CityRepositoryImpl;
@@ -22,12 +24,12 @@ public class InspectionServiceImpl implements InspectionService {
 	private DistrictRepository districtRepository;
 	private CompanyRepository companyRepository;
 	
-	public InspectionServiceImpl() {
-		inspectionRepository = new InspectionRepositoryImpl();
-		federateRepository = new FederateUnitRepositoryImpl();
-		cityRepository = new CityRepositoryImpl();
-		districtRepository = new DistrictRepositoryImpl();
-		companyRepository = new CompanyRepositoryImpl();
+	public InspectionServiceImpl(EntityManager em) {
+		inspectionRepository = new InspectionRepositoryImpl(em);
+		federateRepository = new FederateUnitRepositoryImpl(em);
+		cityRepository = new CityRepositoryImpl(em);
+		districtRepository = new DistrictRepositoryImpl(em);
+		companyRepository = new CompanyRepositoryImpl(em);
 	}
 
 	@Override
@@ -55,19 +57,19 @@ public class InspectionServiceImpl implements InspectionService {
 		try {
 			
 			inspection.setFederateUnit(
-					federateRepository.findByInitials(inspection.getFederateUnit())
+					federateRepository.findByInitials(inspection.getFederateUnit().getInitials())
 					);
 			
 			inspection.setCity(
-					cityRepository.findByName(inspection.getCity())
+					cityRepository.findByName(inspection.getCity().getName())
 					);
 			
 			inspection.setDistrict(
-					districtRepository.findByName(inspection.getDistrict())
+					districtRepository.findByName(inspection.getDistrict().getName())
 					);
 			
 			inspection.setCompany(
-					companyRepository.findByCnpj(inspection.getCompany())
+					companyRepository.findByCnpj(inspection.getCompany().getCnpj())
 					);
 			
 			inspection = this.inspectionRepository.create(inspection);

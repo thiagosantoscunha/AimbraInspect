@@ -5,8 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import br.com.aimbra.inspection.arguments.InspectionFileRequest;
 import br.com.aimbra.inspection.business.FileService;
@@ -16,41 +16,39 @@ public class CompanyInspectionController {
 
 	private FileService fileService;
 	private BufferedReader br;
-	
+	private EntityManager em;
 
-	public CompanyInspectionController() {
-		fileService = new FileServiceImpl();
+	public CompanyInspectionController(EntityManager em) { 
+		this.em = em;
+		fileService = new FileServiceImpl(em);
 	}
 
-	
 	public void readFile() {
 		try {
-			File fileDir = new File("file.csv");
+			
+			File fileDir = new File("fiscal.csv");
 			br = new BufferedReader(new InputStreamReader(new FileInputStream(fileDir), "utf8"));
-			String linha = br.readLine();
-
-			while ((linha = br.readLine()) != null) {
-
-				String[] fiscalizacao = linha.split(";");
+			String csvLine = br.readLine();
+			
+			while ((csvLine = br.readLine()) != null) {
 				
-				InspectionFileRequest inspection = new InspectionFileRequest();
-				inspection.setEndYearInspect(fiscalizacao[0]);
-				inspection.setEndMouthYearInspect(fiscalizacao[1]);
-				inspection.setCnpj(fiscalizacao[2]);
-				inspection.setCompanyName(fiscalizacao[3]);
-				inspection.setStreet(fiscalizacao[4]);
-				inspection.setCep(fiscalizacao[5]);
-				inspection.setDistrict(fiscalizacao[6]);
-				inspection.setCity(fiscalizacao[7]);
-				inspection.setUf(fiscalizacao[8]);
-				
-				fileService.create(inspection);
-				
+				try {
+					em.getTransaction().begin();
+					InspectionFileRequest inspection = new InspectionFileRequest(csvLine);
+					fileService.create(inspection);
+					em.getTransaction().commit();					
+				} catch (Exception e) {
+					em.getTransaction().rollback();
+					System.out.println(e.getMessage());
+				}
 			}
 			
-
+			em.close();
+			
 		} catch (IOException e) {
-			System.err.printf("Erro na abertura do arquivo: %s.\n", e.getMessage());
+			System.out.println("Erro ao ler o arquivo");
+			System.out.println(e.getMessage());
+			return;
 		}
 	}
 

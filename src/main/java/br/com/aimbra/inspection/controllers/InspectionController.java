@@ -2,6 +2,8 @@ package br.com.aimbra.inspection.controllers;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import br.com.aimbra.inspection.business.InspectionService;
 import br.com.aimbra.inspection.business.InspectionServiceImpl;
 import br.com.aimbra.inspection.entities.Inspection;
@@ -10,8 +12,8 @@ public class InspectionController {
 
 	private InspectionService inspectionService;
 
-	public InspectionController() {
-		this.inspectionService = new InspectionServiceImpl();
+	public InspectionController(EntityManager em) {
+		this.inspectionService = new InspectionServiceImpl(em);
 	}
 	
 	public List<Inspection> findAll() {

@@ -21,7 +21,7 @@ public class District implements Serializable {
 	@Column(name = "id")
 	private Long id;
 	
-	@Column(name = "name", nullable = false, length = 100, unique = true)
+	@Column(name = "name", nullable = false, length = 100)
 	private String name;
 	
 	@ManyToOne

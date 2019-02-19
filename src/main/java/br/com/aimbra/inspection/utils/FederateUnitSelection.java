@@ -26,7 +26,7 @@ public abstract class FederateUnitSelection {
 			uf.setName(federateUnitForExtesion);
 			break;
 		
-		case "espiritp santos":
+		case "espirito santos":
 			uf = new FederateUnit();
 			uf.setInitials("ES");
 			uf.setName(federateUnitForExtesion);

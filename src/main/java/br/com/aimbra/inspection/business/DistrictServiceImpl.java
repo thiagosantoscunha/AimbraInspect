@@ -2,6 +2,8 @@ package br.com.aimbra.inspection.business;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import br.com.aimbra.inspection.entities.District;
 import br.com.aimbra.inspection.repositories.CityRepository;
 import br.com.aimbra.inspection.repositories.CityRepositoryImpl;
@@ -13,9 +15,9 @@ public class DistrictServiceImpl implements DistrictService {
 	private DistrictRepository districtRepository;
 	private CityRepository cityRepository;
 	
-	public DistrictServiceImpl() {
-		this.districtRepository = new DistrictRepositoryImpl();
-		this.cityRepository = new CityRepositoryImpl();
+	public DistrictServiceImpl(EntityManager em) {
+		this.districtRepository = new DistrictRepositoryImpl(em);
+		this.cityRepository = new CityRepositoryImpl(em);
 	}
 
 	@Override
@@ -41,7 +43,7 @@ public class DistrictServiceImpl implements DistrictService {
 	@Override
 	public District create(District district) {
 		try {
-			district.setCity(this.cityRepository.findByName(district.getCity()));
+			district.setCity(this.cityRepository.findByName(district.getCity().getName()));
 			district = this.districtRepository.create(district);
 			return district == null ? null : district;
 		} catch (Exception ex) {
@@ -72,7 +74,7 @@ public class DistrictServiceImpl implements DistrictService {
 	@Override
 	public District findByName(District district) {
 		try {
-			district = this.districtRepository.findByName(district);
+			district = this.districtRepository.findByName(district.getName());
 			return district == null ? null : district;
 		} catch (Exception e) {
 			throw e;

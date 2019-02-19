@@ -2,6 +2,8 @@ package br.com.aimbra.inspection.business;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import br.com.aimbra.inspection.entities.City;
 import br.com.aimbra.inspection.entities.FederateUnit;
 import br.com.aimbra.inspection.repositories.CityRepository;
@@ -14,9 +16,9 @@ public class CityServiceImpl implements CityService {
 	private CityRepository cityRepository;
 	private FederateUnitRepository federateUnitRepository;
 	
-	public CityServiceImpl() {
-		this.cityRepository = new CityRepositoryImpl();
-		this.federateUnitRepository = new FederateUnitRepositoryImpl();
+	public CityServiceImpl(EntityManager em) {
+		this.cityRepository = new CityRepositoryImpl(em);
+		this.federateUnitRepository = new FederateUnitRepositoryImpl(em);
 	}
 	
 	@Override
@@ -42,7 +44,7 @@ public class CityServiceImpl implements CityService {
 	@Override
 	public City create(City city) {
 		try {
-			FederateUnit uf = this.federateUnitRepository.findByInitials(city.getFederationUnit());
+			FederateUnit uf = this.federateUnitRepository.findByInitials(city.getFederationUnit().getInitials());
 			city.setFederationUnit(uf);
 			city = this.cityRepository.create(city);
 			return city == null ? null : city;
@@ -74,7 +76,7 @@ public class CityServiceImpl implements CityService {
 	@Override
 	public City findByName(City city) {
 		try {
-			city = this.cityRepository.findByName(city);
+			city = this.cityRepository.findByName(city.getName());
 			return city == null ? null : city;
 		} catch (Exception e) {
 			throw e;

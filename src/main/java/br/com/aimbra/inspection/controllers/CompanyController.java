@@ -2,6 +2,8 @@ package br.com.aimbra.inspection.controllers;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import br.com.aimbra.inspection.business.CompanyService;
 import br.com.aimbra.inspection.business.CompanyServiceImpl;
 import br.com.aimbra.inspection.entities.Company;
@@ -10,8 +12,8 @@ public class CompanyController {
 	
 	private CompanyService companyService;
 	
-	public CompanyController() {
-		companyService = new CompanyServiceImpl();
+	public CompanyController(EntityManager em) {
+		companyService = new CompanyServiceImpl(em);
 	}
 	
 	public List<Company> findAll() {

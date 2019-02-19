@@ -2,6 +2,8 @@ package br.com.aimbra.inspection.business;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import br.com.aimbra.inspection.entities.FederateUnit;
 import br.com.aimbra.inspection.repositories.FederateUnitRepository;
 import br.com.aimbra.inspection.repositories.FederateUnitRepositoryImpl;
@@ -11,8 +13,8 @@ public class FederateUnitServiceImpl implements FederateUnitService {
 	private FederateUnitRepository federateUnitRepository;
 	
 	
-	public FederateUnitServiceImpl() {
-		this.federateUnitRepository = new FederateUnitRepositoryImpl();
+	public FederateUnitServiceImpl(EntityManager em) {
+		this.federateUnitRepository = new FederateUnitRepositoryImpl(em);
 	}
 
 	@Override
@@ -73,7 +75,7 @@ public class FederateUnitServiceImpl implements FederateUnitService {
 	@Override
 	public FederateUnit findByInitials(FederateUnit uf) {
 		try {
-			uf = this.federateUnitRepository.findByInitials(uf);
+			uf = this.federateUnitRepository.findByInitials(uf.getInitials());
 			if (uf == null) return null;
 			return uf;
 		} catch (Exception ex) {

@@ -2,6 +2,8 @@ package br.com.aimbra.inspection.business;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import br.com.aimbra.inspection.entities.Company;
 import br.com.aimbra.inspection.repositories.CityRepository;
 import br.com.aimbra.inspection.repositories.CityRepositoryImpl;
@@ -19,11 +21,11 @@ public class CompanyServiceImpl implements CompanyService {
 	private CityRepository cityRepository;
 	private DistrictRepository districtRepository;
 	
-	public CompanyServiceImpl() {
-		companyRepository = new CompanyRepositoryImpl();
-		federateUnitRepository = new FederateUnitRepositoryImpl();
-		cityRepository = new CityRepositoryImpl();
-		districtRepository = new DistrictRepositoryImpl();
+	public CompanyServiceImpl(EntityManager em) {
+		companyRepository = new CompanyRepositoryImpl(em);
+		federateUnitRepository = new FederateUnitRepositoryImpl(em);
+		cityRepository = new CityRepositoryImpl(em);
+		districtRepository = new DistrictRepositoryImpl(em);
 	}
 
 	@Override
@@ -51,17 +53,17 @@ public class CompanyServiceImpl implements CompanyService {
 		try {
 			
 			company.setFederateUnit(
-					federateUnitRepository.findByInitials(company.getFederateUnit())
+					federateUnitRepository.findByInitials(company.getFederateUnit().getInitials())
 					);
 			System.out.println(company.getFederateUnit());			
 			
 			company.setCity(
-					cityRepository.findByName(company.getCity())
+					cityRepository.findByName(company.getCity().getName())
 					);
 			System.out.println(company.getCity());
 			
 			company.setDistrict(
-					districtRepository.findByName(company.getDistrict())
+					districtRepository.findByName(company.getDistrict().getName())
 					);
 			System.out.println(company.getDistrict());
 			
@@ -96,7 +98,7 @@ public class CompanyServiceImpl implements CompanyService {
 	@Override
 	public Company findByCnpj(Company company) {
 		try {
-			company = this.companyRepository.findByCnpj(company);
+			company = this.companyRepository.findByCnpj(company.getCnpj());
 			return company == null ? null : company;
 		} catch (Exception e) {
 			throw e;

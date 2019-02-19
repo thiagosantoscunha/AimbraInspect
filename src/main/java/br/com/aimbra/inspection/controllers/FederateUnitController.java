@@ -2,6 +2,8 @@ package br.com.aimbra.inspection.controllers;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import br.com.aimbra.inspection.business.FederateUnitService;
 import br.com.aimbra.inspection.business.FederateUnitServiceImpl;
 import br.com.aimbra.inspection.entities.FederateUnit;
@@ -10,8 +12,8 @@ public class FederateUnitController {
 	
 	private FederateUnitService federateUnitService;
 
-	public FederateUnitController() {
-		this.federateUnitService = new FederateUnitServiceImpl();
+	public FederateUnitController(EntityManager em) {
+		this.federateUnitService = new FederateUnitServiceImpl(em);
 	}
 	
 	public FederateUnit create(FederateUnit federateUnit) {

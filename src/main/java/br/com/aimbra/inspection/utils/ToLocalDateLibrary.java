@@ -12,7 +12,7 @@ public abstract class ToLocalDateLibrary {
 	public static LocalDate StringToFirstDateOfMouth(String mountYear) {
 		return LocalDate.of(
 				Integer.parseInt(mountYear.split("/")[0]),
-				Integer.parseInt(mountYear.split("/")[0]),
+				Integer.parseInt(mountYear.split("/")[1]),
 				1
 			);
 	}

@@ -1,5 +1,7 @@
 package br.com.aimbra.inspection.business;
 
+import javax.persistence.EntityManager;
+
 import org.modelmapper.ModelMapper;
 
 import br.com.aimbra.inspection.arguments.InspectionFileRequest;
@@ -35,13 +37,13 @@ public class FileServiceImpl implements FileService {
 	private InspectionLineErrorRepository inspectionLineErrorRepository;
 	private final ModelMapper modelMapper;
 
-	public FileServiceImpl() {
-		federateUnitRepository = new FederateUnitRepositoryImpl();
-		cityRepository = new CityRepositoryImpl();
-		districtRepository = new DistrictRepositoryImpl();
-		companyRepository = new CompanyRepositoryImpl();
-		inspectionRepository = new InspectionRepositoryImpl();
-		inspectionLineErrorRepository = new InspectionLineErrorRepositoryImpl();
+	public FileServiceImpl(EntityManager em) {
+		federateUnitRepository = new FederateUnitRepositoryImpl(em);
+		cityRepository = new CityRepositoryImpl(em);
+		districtRepository = new DistrictRepositoryImpl(em);
+		companyRepository = new CompanyRepositoryImpl(em);
+		inspectionRepository = new InspectionRepositoryImpl(em);
+		inspectionLineErrorRepository = new InspectionLineErrorRepositoryImpl(em);
 		modelMapper = new ModelMapper();
 	}
 
@@ -58,7 +60,7 @@ public class FileServiceImpl implements FileService {
 		if (!federateUnitRepository.exist(uf))
 			uf = federateUnitRepository.create(uf);
 		else
-			uf = federateUnitRepository.findByInitials(uf);
+			uf = federateUnitRepository.findByInitials(uf.getInitials());
 
 		City city = new City();
 		if (req.getCity() == null) {
@@ -67,10 +69,10 @@ public class FileServiceImpl implements FileService {
 		}
 		city.setName(req.getCity());
 		city.setFederationUnit(uf);
-		if (!cityRepository.existOnFederalUnit(city, uf))
+		if (!cityRepository.existOnFederalUnit(city.getName(), uf))
 			city = cityRepository.create(city);
 		else
-			city = cityRepository.findByName(city);
+			city = cityRepository.findByName(city.getName());
 
 		District district = new District();
 		if (req.getDistrict() == null || req.getDistrict().equals("Sem Informação")) {
@@ -79,10 +81,10 @@ public class FileServiceImpl implements FileService {
 		}
 		district.setName(req.getDistrict());
 		district.setCity(city);
-		if (!districtRepository.existOnCity(district, city))
+		if (!districtRepository.existOnCity(district.getName(), city))
 			district = districtRepository.create(district);
 		else
-			district = districtRepository.findByNameAndCity(district, city);
+			district = districtRepository.findByNameOnCity(district.getName(), city);
 
 		Company company = new Company();
 		if (req.getCompanyName() == null) {
@@ -94,7 +96,7 @@ public class FileServiceImpl implements FileService {
 		company.setDistrict(district);
 		company.setName(req.getCompanyName());
 		company.setStreet(req.getStreet());
-		if (!RegexValidators.isZipCode(req.getCep(), "pt_br")) {
+		if (!RegexValidators.isZipCode(req.getCep(), "pt_br") || req.getCep() == null) {
 			ilError = inspectionLineErrorRepository.create(ilError);
 			return;
 		}
@@ -108,7 +110,7 @@ public class FileServiceImpl implements FileService {
 		if (!companyRepository.exist(company))
 			company = companyRepository.create(company);
 		else
-			company = companyRepository.findByCnpj(company);
+			company = companyRepository.findByCnpj(company.getCnpj());
 
 		Inspection inspection = new Inspection();
 		inspection.setCompany(company);

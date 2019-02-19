@@ -15,12 +15,10 @@ import br.com.aimbra.inspection.business.FileServiceImpl;
 public class CompanyInspectionController {
 
 	private FileService fileService;
-	List<InspectionFileRequest> requests;
 	private BufferedReader br;
 	
 
 	public CompanyInspectionController() {
-		requests = new ArrayList<>();
 		fileService = new FileServiceImpl();
 	}
 
@@ -46,11 +44,10 @@ public class CompanyInspectionController {
 				inspection.setCity(fiscalizacao[7]);
 				inspection.setUf(fiscalizacao[8]);
 				
-				requests.add(inspection);
+				fileService.create(inspection);
 				
 			}
 			
-			fileService.create(requests);
 
 		} catch (IOException e) {
 			System.err.printf("Erro na abertura do arquivo: %s.\n", e.getMessage());

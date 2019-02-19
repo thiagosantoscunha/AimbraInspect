@@ -1,7 +1,5 @@
 package br.com.aimbra.inspection.business;
 
-import java.util.List;
-
 import org.modelmapper.ModelMapper;
 
 import br.com.aimbra.inspection.arguments.InspectionFileRequest;
@@ -28,7 +26,7 @@ import br.com.aimbra.inspection.utils.RegexValidators;
 import br.com.aimbra.inspection.utils.ToLocalDateLibrary;
 
 public class FileServiceImpl implements FileService {
-	
+
 	private FederateUnitRepository federateUnitRepository;
 	private CityRepository cityRepository;
 	private DistrictRepository districtRepository;
@@ -36,8 +34,8 @@ public class FileServiceImpl implements FileService {
 	private InspectionRepository inspectionRepository;
 	private InspectionLineErrorRepository inspectionLineErrorRepository;
 	private final ModelMapper modelMapper;
-	
-	public FileServiceImpl() {		
+
+	public FileServiceImpl() {
 		federateUnitRepository = new FederateUnitRepositoryImpl();
 		cityRepository = new CityRepositoryImpl();
 		districtRepository = new DistrictRepositoryImpl();
@@ -46,89 +44,84 @@ public class FileServiceImpl implements FileService {
 		inspectionLineErrorRepository = new InspectionLineErrorRepositoryImpl();
 		modelMapper = new ModelMapper();
 	}
-	
+
 	@Override
-	public void create(List<InspectionFileRequest> requests) {
-		
-		for (InspectionFileRequest req : requests) {
-			
-			InspectionLineError ilError = modelMapper.map(req, InspectionLineError.class);
-			
-			FederateUnit uf = FederateUnitSelection.getFederateUnitInstance(req.getUf());
-			if (uf == null) {
-				ilError = inspectionLineErrorRepository.create(ilError);
-				continue;
-			}
-			if (!federateUnitRepository.exist(uf)) uf = federateUnitRepository.create(uf);
-			else uf = federateUnitRepository.findByInitials(uf);
-			
-			
-			City city = new City();
-			if (req.getCity() == null) {
-				ilError = inspectionLineErrorRepository.create(ilError);
-				continue;
-			}
-			city.setName(req.getCity());
-			city.setFederationUnit(uf);
-			if (!cityRepository.existOnFederalUnit(city, uf)) city = cityRepository.create(city); 
-			else city = cityRepository.findByName(city);
-		
-			
-			District district = new District();
-			if(req.getDistrict() == null || req.getDistrict().equals("Sem Informação")) {
-				ilError = inspectionLineErrorRepository.create(ilError);
-				continue;
-			}
-			district.setName(req.getDistrict());
-			district.setCity(city);
-			if (!districtRepository.existOnCity(district, city)) district = districtRepository.create(district);
-			else district = districtRepository.findByNameAndCity(district, city);
-			
-			Company company = new Company();
-			if (req.getCompanyName() == null) {
-				ilError = inspectionLineErrorRepository.create(ilError);
-				continue;
-			}
-			company.setFederateUnit(uf);
-			company.setCity(city);
-			company.setDistrict(district);
-			company.setName(req.getCompanyName());
-			company.setStreet(req.getStreet());
-			if (!RegexValidators.isZipCode(req.getCep(), "pt_br")) {
-				ilError = inspectionLineErrorRepository.create(ilError);
-				continue;
-			}
-			company.setZipCode(req.getCep());
-			
-			if(!RegexValidators.isCnpj(req.getCnpj()) || req.getCnpj() == null) {
-				ilError = inspectionLineErrorRepository.create(ilError);
-				continue;
-			}
-			company.setCnpj(req.getCnpj());
-			if (!companyRepository.exist(company)) company = companyRepository.create(company);
-			else company = companyRepository.findByCnpj(company);
-			
-			Inspection inspection = new Inspection();
-			inspection.setCompany(company);
-			inspection.setFederateUnit(uf);
-			inspection.setCity(city);
-			inspection.setDistrict(district);
-			inspection.setNameCompany(req.getCompanyName());
-			inspection.setPublicPlace(req.getStreet());
-			inspection.setZipCode(req.getCep());
-			inspection.setDate(
-					ToLocalDateLibrary.StringToFirstDateOfMouth(
-							req.getEndMouthYearInspect()
-							)
-					);
-			
-			inspection = inspectionRepository.create(inspection);
-			System.out.println("Adicionado com sucesso!");
-			System.out.println(inspection);
+	public void create(InspectionFileRequest req) {
+
+		InspectionLineError ilError = modelMapper.map(req, InspectionLineError.class);
+
+		FederateUnit uf = FederateUnitSelection.getFederateUnitInstance(req.getUf());
+		if (uf == null) {
+			ilError = inspectionLineErrorRepository.create(ilError);
+			return;
 		}
-		
+		if (!federateUnitRepository.exist(uf))
+			uf = federateUnitRepository.create(uf);
+		else
+			uf = federateUnitRepository.findByInitials(uf);
+
+		City city = new City();
+		if (req.getCity() == null) {
+			ilError = inspectionLineErrorRepository.create(ilError);
+			return;
+		}
+		city.setName(req.getCity());
+		city.setFederationUnit(uf);
+		if (!cityRepository.existOnFederalUnit(city, uf))
+			city = cityRepository.create(city);
+		else
+			city = cityRepository.findByName(city);
+
+		District district = new District();
+		if (req.getDistrict() == null || req.getDistrict().equals("Sem Informação")) {
+			ilError = inspectionLineErrorRepository.create(ilError);
+			return;
+		}
+		district.setName(req.getDistrict());
+		district.setCity(city);
+		if (!districtRepository.existOnCity(district, city))
+			district = districtRepository.create(district);
+		else
+			district = districtRepository.findByNameAndCity(district, city);
+
+		Company company = new Company();
+		if (req.getCompanyName() == null) {
+			ilError = inspectionLineErrorRepository.create(ilError);
+			return;
+		}
+		company.setFederateUnit(uf);
+		company.setCity(city);
+		company.setDistrict(district);
+		company.setName(req.getCompanyName());
+		company.setStreet(req.getStreet());
+		if (!RegexValidators.isZipCode(req.getCep(), "pt_br")) {
+			ilError = inspectionLineErrorRepository.create(ilError);
+			return;
+		}
+		company.setZipCode(req.getCep());
+
+		if (!RegexValidators.isCnpj(req.getCnpj()) || req.getCnpj() == null) {
+			ilError = inspectionLineErrorRepository.create(ilError);
+			return;
+		}
+		company.setCnpj(req.getCnpj());
+		if (!companyRepository.exist(company))
+			company = companyRepository.create(company);
+		else
+			company = companyRepository.findByCnpj(company);
+
+		Inspection inspection = new Inspection();
+		inspection.setCompany(company);
+		inspection.setFederateUnit(uf);
+		inspection.setCity(city);
+		inspection.setDistrict(district);
+		inspection.setNameCompany(req.getCompanyName());
+		inspection.setPublicPlace(req.getStreet());
+		inspection.setZipCode(req.getCep());
+		inspection.setDate(ToLocalDateLibrary.StringToFirstDateOfMouth(req.getEndMouthYearInspect()));
+
+		inspection = inspectionRepository.create(inspection);
+
 	}
-	
-	
 
 }

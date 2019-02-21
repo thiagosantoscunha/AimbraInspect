@@ -4,40 +4,45 @@ import br.com.aimbra.inspection.entities.FederateUnit;
 
 public abstract class FederateUnitSelection {
 
-	public static FederateUnit getFederateUnitInstance(String federateUnitForExtesion) {
+    public static FederateUnit getFederateUnitInstance(String federateUnitForExtesion) {
 
-		FederateUnit uf;
+        FederateUnit uf;
 
-		switch (federateUnitForExtesion.toLowerCase()) {
+        switch (federateUnitForExtesion.toLowerCase()) {
 
-		case "são paulo":
-		case "sao paulo":
-			uf = new FederateUnit();
-			uf.setInitials("SP");
-			if (federateUnitForExtesion.equals("sao paulo"))
-				uf.setName(federateUnitForExtesion);
-			else
-				uf.setName(federateUnitForExtesion);
-			break;
+            case "são paulo":
+            case "sao paulo":
+                uf = new FederateUnit();
+                uf.setInitials("SP");
+                uf.setName("São Paulo");
+                return uf;
 
-		case "rio de janeiro":
-			uf = new FederateUnit();
-			uf.setInitials("RJ");
-			uf.setName(federateUnitForExtesion);
-			break;
-		
-		case "espirito santos":
-			uf = new FederateUnit();
-			uf.setInitials("ES");
-			uf.setName(federateUnitForExtesion);
-			break;
+            case "rio de janeiro":
+                uf = new FederateUnit();
+                uf.setInitials("RJ");
+                uf.setName("Rio de Janeiro");
+                return uf;
 
-		default:
-			return null;
-		}
+            case "espirito santo":
+                uf = new FederateUnit();
+                uf.setInitials("ES");
+                uf.setName("Espirito Santo");
+                return uf;
 
-		return uf;
-
-	}
+            case "minas gerais":
+                uf = new FederateUnit();
+                uf.setInitials("MG");
+                uf.setName("Minas Gerais");
+                return uf;
+                
+            case "bahia":
+                uf = new FederateUnit();
+                uf.setInitials("BA");
+                uf.setName("Bahia");
+                return uf;
+        }
+        
+		return null;
+    }
 
 }

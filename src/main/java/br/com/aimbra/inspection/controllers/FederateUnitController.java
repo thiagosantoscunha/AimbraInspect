@@ -4,9 +4,10 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import br.com.aimbra.inspection.arguments.FederateUnitRequest;
+import br.com.aimbra.inspection.arguments.FederateUnitResponse;
 import br.com.aimbra.inspection.business.FederateUnitService;
 import br.com.aimbra.inspection.business.FederateUnitServiceImpl;
-import br.com.aimbra.inspection.entities.FederateUnit;
 
 public class FederateUnitController {
 	
@@ -16,28 +17,28 @@ public class FederateUnitController {
 		this.federateUnitService = new FederateUnitServiceImpl(em);
 	}
 	
-	public FederateUnit create(FederateUnit federateUnit) {
+	public FederateUnitResponse create(FederateUnitRequest federateUnit) {
 		return this.federateUnitService.create(federateUnit);
 	}
 	
-	public List<FederateUnit> findAll() {
+	public List<FederateUnitResponse> findAll() {
 		return this.federateUnitService.findAll();
 	}
 	
-	public FederateUnit findById(Long id) {
+	public FederateUnitResponse findById(Long id) {
 		return this.federateUnitService.findById(id);
 	}
 	
-	public FederateUnit update(FederateUnit federateUnit) {
+	public FederateUnitResponse update(FederateUnitRequest federateUnit) {
 		return this.federateUnitService.update(federateUnit);
 	}
 	
-	public FederateUnit delete(FederateUnit federateUnit) {
+	public FederateUnitResponse delete(FederateUnitRequest federateUnit) {
 		return this.federateUnitService.delete(federateUnit);
 	}
 	
-	public FederateUnit findByInitials(FederateUnit federateUnit) {
-		return this.federateUnitService.findByInitials(federateUnit);
+	public FederateUnitResponse findByInitials(String initials) {
+		return this.federateUnitService.findByInitials(initials);
 	}
 
 }

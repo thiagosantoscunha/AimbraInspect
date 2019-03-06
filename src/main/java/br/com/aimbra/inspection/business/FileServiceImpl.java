@@ -51,7 +51,8 @@ public class FileServiceImpl implements FileService {
 	public void create(InspectionFileRequest req) {
 
 		InspectionLineError ilError = modelMapper.map(req, InspectionLineError.class);
-
+		
+		//Trata Federate Unit
 		FederateUnit uf = FederateUnitSelection.getFederateUnitInstance(req.getUf());
 		if (uf == null) {
 			ilError = inspectionLineErrorRepository.create(ilError);
@@ -62,6 +63,7 @@ public class FileServiceImpl implements FileService {
 		else
 			uf = federateUnitRepository.findByInitials(uf.getInitials());
 
+		//Trata o City
 		City city = new City();
 		if (req.getCity() == null) {
 			ilError = inspectionLineErrorRepository.create(ilError);
@@ -74,6 +76,7 @@ public class FileServiceImpl implements FileService {
 		else
 			city = cityRepository.findByName(city.getName());
 
+		//Trata o bairro
 		District district = new District();
 		if (req.getDistrict() == null || req.getDistrict().equals("Sem Informação")) {
 			ilError = inspectionLineErrorRepository.create(ilError);
@@ -86,6 +89,7 @@ public class FileServiceImpl implements FileService {
 		else
 			district = districtRepository.findByNameOnCity(district.getName(), city);
 
+		//Trata a empresa
 		Company company = new Company();
 		if (req.getCompanyName() == null) {
 			ilError = inspectionLineErrorRepository.create(ilError);
@@ -112,6 +116,7 @@ public class FileServiceImpl implements FileService {
 		else
 			company = companyRepository.findByCnpj(company.getCnpj());
 
+		//Trata a fiscalização
 		Inspection inspection = new Inspection();
 		inspection.setCompany(company);
 		inspection.setFederateUnit(uf);

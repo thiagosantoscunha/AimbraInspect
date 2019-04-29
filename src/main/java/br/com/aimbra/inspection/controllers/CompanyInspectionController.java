@@ -26,7 +26,7 @@ public class CompanyInspectionController {
 	public void readFile() {
 		try {
 			
-			File fileDir = new File("fiscal.csv");
+			File fileDir = new File("file2.csv");
 			br = new BufferedReader(new InputStreamReader(new FileInputStream(fileDir), "utf8"));
 			String csvLine = br.readLine();
 			

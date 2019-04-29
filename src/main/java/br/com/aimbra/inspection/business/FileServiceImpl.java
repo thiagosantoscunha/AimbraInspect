@@ -4,6 +4,8 @@ import javax.persistence.EntityManager;
 
 import org.modelmapper.ModelMapper;
 
+import br.com.aimbra.inspection.arguments.FederateUnitRequest;
+import br.com.aimbra.inspection.arguments.FederateUnitResponse;
 import br.com.aimbra.inspection.arguments.InspectionFileRequest;
 import br.com.aimbra.inspection.entities.City;
 import br.com.aimbra.inspection.entities.Company;
@@ -23,6 +25,7 @@ import br.com.aimbra.inspection.repositories.InspectionLineErrorRepository;
 import br.com.aimbra.inspection.repositories.InspectionLineErrorRepositoryImpl;
 import br.com.aimbra.inspection.repositories.InspectionRepository;
 import br.com.aimbra.inspection.repositories.InspectionRepositoryImpl;
+import br.com.aimbra.inspection.utils.CnpjValidator;
 import br.com.aimbra.inspection.utils.FederateUnitSelection;
 import br.com.aimbra.inspection.utils.RegexValidators;
 import br.com.aimbra.inspection.utils.ToLocalDateLibrary;
@@ -36,6 +39,8 @@ public class FileServiceImpl implements FileService {
 	private InspectionRepository inspectionRepository;
 	private InspectionLineErrorRepository inspectionLineErrorRepository;
 	private final ModelMapper modelMapper;
+	
+	private FederateUnitService federateUnitService;
 
 	public FileServiceImpl(EntityManager em) {
 		federateUnitRepository = new FederateUnitRepositoryImpl(em);
@@ -45,6 +50,9 @@ public class FileServiceImpl implements FileService {
 		inspectionRepository = new InspectionRepositoryImpl(em);
 		inspectionLineErrorRepository = new InspectionLineErrorRepositoryImpl(em);
 		modelMapper = new ModelMapper();
+		
+		
+		federateUnitService = new FederateUnitServiceImpl(em);
 	}
 
 	@Override
@@ -53,15 +61,14 @@ public class FileServiceImpl implements FileService {
 		InspectionLineError ilError = modelMapper.map(req, InspectionLineError.class);
 		
 		//Trata Federate Unit
-		FederateUnit uf = FederateUnitSelection.getFederateUnitInstance(req.getUf());
-		if (uf == null) {
+		FederateUnit uf = new FederateUnit();
+		uf.setName(req.getUf());
+		FederateUnitRequest ufRequest = modelMapper.map(uf, FederateUnitRequest.class);
+		FederateUnitResponse ufResponse = federateUnitService.create(ufRequest);
+		if (ufResponse == null) {
 			ilError = inspectionLineErrorRepository.create(ilError);
 			return;
 		}
-		if (!federateUnitRepository.exist(uf))
-			uf = federateUnitRepository.create(uf);
-		else
-			uf = federateUnitRepository.findByInitials(uf.getInitials());
 
 		//Trata o City
 		City city = new City();
@@ -105,8 +112,9 @@ public class FileServiceImpl implements FileService {
 			return;
 		}
 		company.setZipCode(req.getCep());
-
-		if (!RegexValidators.isCnpj(req.getCnpj()) || req.getCnpj() == null) {
+		
+		CnpjValidator cnpjValidator = new CnpjValidator(req.getCnpj()); 
+		if (req.getCnpj() == null || !cnpjValidator.isCNPJ()) {
 			ilError = inspectionLineErrorRepository.create(ilError);
 			return;
 		}

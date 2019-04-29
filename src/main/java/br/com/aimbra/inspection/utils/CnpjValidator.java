@@ -27,18 +27,20 @@ public class CnpjValidator {
 		return (calculateFirstDigit() == _cnpj.charAt(12)) && (calculateSecondDigit() == _cnpj.charAt(13));
 	}
 	
-	
 	private char calculateSecondDigit() {
 		sm = 0;
 		peso = 2;
 		for (int i = 12; i >= 0; i--) {
-			sm += (convertStringToInt(i) * peso);
-			peso = peso + 1;
-			if (peso == 10)
-				peso = 2;
+			pesoVirified(i);
 		}
 		restTratament();
 		return digit;
+	}
+
+	private void pesoVirified(int i) {
+		sm += (convertStringToInt(i) * peso);
+		peso += 1;
+		if (peso == 10) peso = 2;
 	}
 	
 	private String stringTratament(String cnpj) {
@@ -60,10 +62,7 @@ public class CnpjValidator {
 		sm = 0;
 		peso = 2;
 		for (int i = 11; i >= 0; i--) {
-			sm += (convertStringToInt(i) * peso);
-			peso = peso + 1;
-			if (peso == 10)
-				peso = 2;
+			pesoVirified(i);
 		}
 		restTratament();
 		return digit;

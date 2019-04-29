@@ -56,15 +56,29 @@ public class FederateUnitServiceImpl implements FederateUnitService {
 	public FederateUnitResponse create(FederateUnitRequest federateUnitRequest) {
 		try {
 			
+			FederateUnit uf = modelMapper.map(federateUnitRequest, FederateUnit.class);
+			uf = FederateUnitSelection.getFederateUnitInstance(uf.getName());
+			
+			if (uf == null) {
+				return null;
+			}
+			
 			if (federateUnitRequest == null ||
 				federateUnitRequest.getName() == null   ||
 				federateUnitRequest.getName().isEmpty()
 				) return null;
 			
-			FederateUnit uf = modelMapper.map(federateUnitRequest, FederateUnit.class);
-			uf = FederateUnitSelection.getFederateUnitInstance(uf.getName());
-			uf = this.federateUnitRepository.create(uf);
-			return modelMapper.map(uf, FederateUnitResponse.class);
+			if(!federateUnitRepository.exist(uf)) {
+				return modelMapper.map(
+						federateUnitRepository.create(uf),
+						FederateUnitResponse.class
+						);
+			} else {
+				return modelMapper.map(
+						federateUnitRepository.findByInitials(uf.getInitials()),
+						FederateUnitResponse.class
+						);
+			}
 		} catch (Exception ex) {
 			throw ex;
 		}
